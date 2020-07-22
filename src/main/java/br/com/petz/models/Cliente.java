@@ -1,12 +1,9 @@
 package br.com.petz.models;
 
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Cliente {
@@ -19,8 +16,6 @@ public class Cliente {
 	private String endereco;
 	private String email;
 	private String telefone;
-	@OneToMany
-	private Set<Pet> pets;
 	public Integer getId() {
 		return id;
 	}
@@ -51,12 +46,6 @@ public class Cliente {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public Set<Pet> getPets() {
-		return pets;
-	}
-	public void setPets(Set<Pet> pets) {
-		this.pets = pets;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,9 +72,9 @@ public class Cliente {
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", email=" + email + ", telefone="
-				+ telefone + ", pets=" + pets + "]";
+				+ telefone + "]";
 	}
-
+	
 	
 
 }

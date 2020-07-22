@@ -4,8 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.Table;
+/**
+ * Entity that represents a Pet
+ * @author usetelni
+ *
+ */
 @Entity
+@Table(name = "pets")
 public class Pet {
 
 	@Id

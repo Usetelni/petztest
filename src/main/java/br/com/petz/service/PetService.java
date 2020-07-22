@@ -8,50 +8,53 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.petz.controller.PetzCrudController;
-import br.com.petz.models.Cliente;
-import br.com.petz.repository.PetRepository;
+import br.com.petz.controller.ClienteController;
+import br.com.petz.models.Pet;
+import br.com.petz.repository.PetsRepository;
 
 @Service
 public class PetService {
+
+public static Logger log = LoggerFactory.getLogger(ClienteController.class);
+
 	@Autowired
-	private PetRepository repository;
+	private PetsRepository repository;
 	
-	public static Logger log = LoggerFactory.getLogger(PetzCrudController.class);
-	
-	
-	public List<Cliente> getAllClients(){
+	public List<Pet> getAllPet(){
+		log.info("Finding all pets registereds");
 		return repository.findAll();
 	}
 	
 	
-	public Optional<Cliente> getClientById(Integer id){
+	public Optional<Pet> getPetById(Integer id){
+		log.info("Find pet by id: " + id);
 		return repository.findById(id);
 	}
 	
 	
-	public Cliente createClient( Cliente cliente){
-		log.info("Saving entity" + cliente);
-		return repository.saveAndFlush(cliente);
+	public Pet createPet( Pet pet){
+		log.info("Saving entity" + pet);
+		return repository.saveAndFlush(pet);
 	}
 	
 	
-	public Cliente editClient(Cliente cliente){
-		if(repository.findById(cliente.getId()).isPresent()) {
-			return repository.saveAndFlush(cliente);
+	public Pet editPet(Pet pet){
+		if(repository.findById(pet.getId()).isPresent()) {
+			log.info("Editing entity" + pet);
+			return repository.saveAndFlush(pet);
 		}
 		return null;
 	}
 	
 	
-	public boolean  deleteClient(Integer id){
+	public boolean  deletePet(Integer id){
 		if(repository.findById(id).isPresent()) {
+			log.info("Deleting entity id :" + id);
 			 repository.deleteById(id);
 			 return true;
 		}
 		return false;
 		
 	}
-
 
 }

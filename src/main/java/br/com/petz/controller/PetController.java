@@ -3,8 +3,6 @@ package br.com.petz.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,69 +17,75 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.petz.models.Cliente;
+import br.com.petz.models.Pet;
 import br.com.petz.service.PetService;
 
 @RestController
-@RequestMapping("/petz")
-public class PetzCrudController {
-
-	private static Logger log = LoggerFactory.getLogger(PetzCrudController.class);
+@RequestMapping("/petz/pet")
+public class PetController {
+	
+	private static Logger log = LoggerFactory.getLogger(PetController.class);
 
 	@Autowired
 	private PetService service;
 
-	@GetMapping("/clientes")
-	public ResponseEntity<List<Cliente>> getAllClients() {
-		log.info("Localizating all clients");
-		List<Cliente> clientes = new ArrayList<>();
+	@GetMapping("/pets")
+	public ResponseEntity<List<Pet>> getAllPet() {
+		log.info("Localizating all pets");
+		List<Pet> pet = new ArrayList<>();
 		try {
-			clientes = service.getAllClients();
+			pet = service.getAllPet();
 		} catch (Exception e) {
 			ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(clientes);
+		return ResponseEntity.ok(pet);
 	}
 
-	@GetMapping("/cliente/{id}")
-	public ResponseEntity<Cliente> getClientById(@PathVariable("id") Integer id) {
+	@GetMapping("/pet/{id}")
+	public ResponseEntity<Pet> getPetById(@PathVariable("id") Integer id) {
 		
-		log.info("Try to find client by id: " + id);
-		return service.getClientById(id).map(response -> ResponseEntity.ok(response))
+		log.info("Try to find pet by id: " + id);
+		return service.getPetById(id).map(response -> ResponseEntity.ok(response))
 				.orElse(ResponseEntity.notFound().build());
 
 	}
 
 	@PostMapping("/cadastro")
-	public ResponseEntity<Cliente> createClient(@RequestBody Cliente body) {
-		Cliente cliente = null;
+	public ResponseEntity<Pet> createPet(@RequestBody Pet body) {
+		log.info("Receiving request to save a entity: " + body);
+		Pet pet = null;
 		try {
-			cliente = service.createClient(body);
+			pet = service.createPet(body);
 		} catch (Exception e) {
 			ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(cliente);
+		return ResponseEntity.ok(pet);
 	}
 
 	@PutMapping("/editar")
-	public ResponseEntity<Cliente> editClient(@RequestBody Cliente body) {
-		Cliente cliente = null;
+	public ResponseEntity<Pet> editPet(@RequestBody Pet body) {
+		log.info("Receiving request to edit a entity: " + body);
+
+		Pet pet = null;
 		try {
-			cliente = service.editClient(body);
+			pet = service.editPet(body);
 		} catch (Exception e) {
 			ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(cliente);
+		return ResponseEntity.ok(pet);
 	}
 
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<Void> deleteClient(@PathVariable("id") Integer id) {
+		log.info("Receiving request to delete a entity: " + id);
+
 		boolean deleted = false;
 		try {
-			deleted = service.deleteClient(id);
+			deleted = service.deletePet(id);
 		} catch (Exception e) {
 			ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.status(deleted == true ? HttpStatus.OK : HttpStatus.NOT_FOUND).build();
 	}
+
 }
